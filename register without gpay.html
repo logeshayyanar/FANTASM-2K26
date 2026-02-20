@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Register | FANTASM 2K26</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --royal-red: #4a0404; --gold: #d4af37; --white: #ffffff; }
+
+        body {
+            background: linear-gradient(rgba(26, 2, 2, 0.9), rgba(74, 4, 4, 0.9)), url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&q=80&w=1600');
+            background-size: cover; color: var(--white); font-family: 'Montserrat', sans-serif;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;
+        }
+
+        .reg-card {
+            width: 100%; max-width: 500px; background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px); border: 2px solid var(--gold);
+            border-radius: 25px; padding: 30px; box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .form-logo { width: 120px; margin-bottom: 10px; }
+        h2 { font-family: 'Cinzel Decorative', cursive; color: var(--gold); margin-bottom: 25px; letter-spacing: 2px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; color: var(--gold); font-size: 0.8rem; font-weight: bold; }
+
+        input[type="text"], input[type="email"], input[type="tel"] {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #555;
+            background: rgba(0,0,0,0.4); color: white; box-sizing: border-box; outline: none;
+        }
+
+        input:focus { border-color: var(--gold); }
+
+        .checkbox-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+            background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; font-size: 0.8rem;
+        }
+
+        .submit-btn {
+            width: 100%; padding: 15px; background: var(--gold); color: #000;
+            border: none; border-radius: 50px; font-weight: 900; cursor: pointer;
+            margin-top: 20px; font-family: 'Cinzel Decorative'; transition: 0.3s;
+        }
+
+        .submit-btn:disabled { background: #555; opacity: 0.6; }
+    </style>
+</head>
+<body>
+
+    <div class="reg-card">
+        <img src="1.png" alt="FANTASM LOGO" class="form-logo">
+        <h2>QUICK REGISTER</h2>
+        <p style="font-size: 0.7rem; color: var(--gold); margin-bottom: 20px;">(DIRECT ENTRY - NO PROOF NEEDED)</p>
+        
+        <form id="noPhotoForm">
+            <div class="form-group"><label>FULL NAME</label><input type="text" name="name" required></div>
+            <div class="form-group"><label>MOBILE NUMBER</label><input type="tel" name="mobile" pattern="[0-9]{10}" required></div>
+            <div class="form-group"><label>COLLEGE NAME</label><input type="text" name="college" required></div>
+            <div class="form-group"><label>ROLL NO & DEPARTMENT</label><input type="text" name="rollno" required></div>
+            <div class="form-group"><label>EMAIL ID</label><input type="email" name="email" required></div>
+            
+            
+            <div class="form-group">
+                <label>SELECT EVENTS</label>
+                <div class="checkbox-grid">
+                    <label><input type="checkbox" name="events" value="Short Film"> Short Film</label>
+                    <label><input type="checkbox" name="events" value="Runway"> Runway</label>
+                    <label><input type="checkbox" name="events" value="Group Dance"> Group Dance</label>
+                    <label><input type="checkbox" name="events" value="Photography"> Photography</label>
+                    <label><input type="checkbox" name="events" value="Ad Act"> Ad Act</label>
+                    <label><input type="checkbox" name="events" value="Adaptune"> Adaptune</label>
+                    <label><input type="checkbox" name="events" value="Face Paint"> Face Paint</label>
+                    <label><input type="checkbox" name="events" value="Pencil Sketch"> Pencil Sketch</label>
+   <label><input type="checkbox" name="events" value="Radio Jockey"> Radio Jockey</label>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="submit-btn">REGISTER NOW</button>
+        </form>
+<p style="margin-top: 20px; font-weight: 600; font-size: 0.7rem; opacity: 0.7;">FOR FURTHER INFORMATION +91-82209-90944</p>
+    </div>
+
+    <script>
+        // Update this with your latest Deployment URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz1qXDo4-lNKwMTWjtJbVJg73HnV9b8uvxBHksYUjn1QlHvt6VmDAl13Tjqy1Ciro2j/exec'; 
+        const form = document.getElementById('noPhotoForm');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerText = "Processing...";
+
+            let selectedEvents = [];
+            document.querySelectorAll('input[name="events"]:checked').forEach(cb => selectedEvents.push(cb.value));
+
+            const data = {
+                noPhoto: true, 
+                username: form.name.value,
+                college: form.college.value,
+                rollno: form.rollno.value,
+                email: form.email.value,
+                mobile: form.mobile.value,
+                events: selectedEvents.join(", ")
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(res => res.text())
+            .then(response => {
+                if(response === "Limit Reached") {
+                    alert("Registration Full! (Limit 700 reached)");
+                } else {
+                    alert("Registration Successful!");
+                    form.reset();
+                }
+            })
+            .catch(error => alert("Submission failed. Try again."))
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = "REGISTER NOW";
+            });
+        });
+    </script>
+</body>
+</html>
